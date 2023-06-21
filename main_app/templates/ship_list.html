@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Ship{% endblock %}
+
+{% block content %}
+
+<h1 class="title pt-5">Famous Ships</h1>
+<div class="gallery">
+    {% for ship in ships %}
+    <a href="">
+        <div class="card">
+            <div class="card-image">
+                <figure class="image is-square">
+                    <img src="{{ship.image}}" alt="{{ship.name}}" />
+                </figure>
+            </div>
+            <div class="card-header">
+                <p class="card-header-title">{{ship.name}}</p>
+            </div>
+        </div>
+    </a>
+    {% empty %}
+    <article class="message">
+        <div class="message-header">
+            <p>No Ships Available</p>
+        </div>
+    </article>
+    {% endfor %}
+</div>
+{% endblock %}

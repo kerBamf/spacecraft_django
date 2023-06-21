@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Manufacturer{% endblock %}
+
+{% block content %}
+
+<h1 class="title pt-5">Major Shipwrights</h1>
+<div class="gallery">
+    {% for manufacturer in manufacturers %}
+    <a href="">
+        <div class="card">
+            <div class="card-image">
+                <figure class="image is-square">
+                    <img src="{{manufacturer.image}}" alt="{{manufacturer.name}}" />
+                </figure>
+            </div>
+            <div class="card-header">
+                <p class="card-header-title">{{manufacturer.name}}</p>
+            </div>
+        </div>
+    </a>
+    {% empty %}
+    <article class="message">
+        <div class="message-header">
+            <p>No Shipwrights Available</p>
+        </div>
+    </article>
+    {% endfor %}
+</div>
+{% endblock %}
