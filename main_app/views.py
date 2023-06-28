@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from django.http import HttpResponse
 from django.views.generic.base import TemplateView
@@ -53,19 +53,6 @@ class ManufacturerDelete(DeleteView):
     template_name = "manufacturer_delete_confirmation.html"
     success_url = '/shipwrights/'
 
-class Ship:
-    def __init__(self, name, image, manufacturer):
-        self.name = name
-        self.image = image
-        self.manufacturer = manufacturer
-
-# ships = [
-#     Ship("X-Wing", "https://static.wikia.nocookie.net/starwars/images/0/00/Xwing-ROOCE.png/revision/latest/scale-to-width-down/1000?cb=20230516042654", "Incom Corporation"),
-#     Ship("Millenium Falcon", "https://static.wikia.nocookie.net/starwars/images/5/52/Millennium_Falcon_Fathead_TROS.png/revision/latest/scale-to-width-down/1000?cb=20221029015218", "Corellian Engineering Corporation"),
-#     Ship("A-Wing", "https://static.wikia.nocookie.net/starwars/images/1/13/RZ1-BF2.png/revision/latest/scale-to-width-down/1000?cb=20171005230121", "Kuat Drive Yards"),
-#     Ship("TIE-Interceptor", "https://static.wikia.nocookie.net/starwars/images/f/f5/TIE_Interceptor_BF.png/revision/latest/scale-to-width-down/1000?cb=20170501054325", "Sienar Fleet Systems"),
-# ]
-
 class ShipList(TemplateView):
     template_name = "ship_list.html"
 
@@ -73,3 +60,11 @@ class ShipList(TemplateView):
         context = super().get_context_data(**kwargs)
         context["ships"] = Spacecraft.objects.all()
         return context
+    
+class SpacecraftCreate(View):
+    def post(self, request, pk):
+        name = request.POST.get('name')
+        image = request.POST.get('image')
+        manufacturer = Manufacturer.objects.get(pk=pk)
+        Spacecraft.objects.create(name=name, image=image, manufacturer=manufacturer)
+        return redirect ('manufacturer_detail', pk=pk)
