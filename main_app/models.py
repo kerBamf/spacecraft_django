@@ -13,3 +13,11 @@ class Manufacturer(models.Model):
 
     class Meta:
         ordering = ['name']
+
+class Spacecraft(models.Model):
+    name = models.CharField(max_length=50)
+    image = models.CharField(max_length=250)
+    manufacturer = models.ForeignKey(Manufacturer, on_delete=models.CASCADE, related_name="ships")
+
+    def __str__(self):
+        return self.name
