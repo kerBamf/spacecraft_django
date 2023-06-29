@@ -1,4 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1>Spacecraft Home</h1>
+<div class="home__playlists">
+    {% for squadron in squadrons %}
+
+        <div class="playlist mb-5">
+            <h3 class="title is-3 has-text-success">{{squadron.name}}</h3>
+            <hr />
+
+            {% for ship in squadron.spacecraft.all %}
+
+                <div class="song">
+                    <span>•</span>
+                    <span><b>{{ship.name}}</b></span>
+                    <span>
+                        <a href="{% url 'squadron_spacecraft_assoc' squadron.pk spacecraft.pk %}?assoc=remove" class="button is-danger is-outlined">
+                            <span class="icon is-small">
+                                <i class="fas fa-times"></i>
+                            </span>
+                        </a>
+                    </span>
+                </div>
+
+            {% endfor %}
+        </div>
+    {% empty %}
+        <div class="playlist mb-5">There are no ships assigned to this squadron.</div>
+    {% endfor %}
+</div>
 {% endblock %}

@@ -4,14 +4,17 @@ from django.http import HttpResponse
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import DetailView
-from .models import Manufacturer, Spacecraft
+from .models import Manufacturer, Spacecraft, Squadron
 
 # Create your views here.
 
 class Home(TemplateView):
-    # def get(self, request):
-    #     return HttpResponse("Spacecraft Home")
     template_name = "home.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["squadrons"] = Squadron.objects.all()
+        return context
 
 class About(TemplateView):
     # def get(self, request):
@@ -68,3 +71,12 @@ class SpacecraftCreate(View):
         manufacturer = Manufacturer.objects.get(pk=pk)
         Spacecraft.objects.create(name=name, image=image, manufacturer=manufacturer)
         return redirect ('manufacturer_detail', pk=pk)
+    
+class SquadronSpacecraftAssoc(View):
+    def get(self, request, pk, spacecraft_pk):
+        assoc = request.GET.get("assoc")
+        if assoc == "remove":
+            Squadron.objects.get(pk=pk).spacecraft.remove(spacecraft_pk)
+        if assoc == "add":
+            Squadron.objects.get(pk=pk).spacecraft.add(spacecraft_pk)
+        return redirect('home')

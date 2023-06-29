@@ -21,3 +21,10 @@ class Spacecraft(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Squadron(models.Model):
+    name = models.CharField(max_length=150)
+    spacecraft = models.ManyToManyField(Spacecraft)
+
+    def __str__(self):
+        return self.name
