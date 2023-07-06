@@ -45,6 +45,11 @@ class ManufacturerDetail(DetailView):
     model = Manufacturer
     template_name = "manufacturer_detail.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["squadrons"] = Squadron.objects.all()
+        return context
+
 class ManufacturerUpdate(UpdateView):
     model = Manufacturer
     fields = ['name', 'image', 'about', 'verified_manufacturer',]
